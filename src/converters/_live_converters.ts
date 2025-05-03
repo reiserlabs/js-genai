@@ -296,169 +296,6 @@ export function enterpriseWebSearchToVertex(): Record<string, unknown> {
   return toObject;
 }
 
-export function apiKeyConfigToMldev(
-  apiClient: ApiClient,
-  fromObject: types.ApiKeyConfig,
-): Record<string, unknown> {
-  const toObject: Record<string, unknown> = {};
-
-  if (common.getValueByPath(fromObject, ['apiKeyString']) !== undefined) {
-    throw new Error('apiKeyString parameter is not supported in Gemini API.');
-  }
-
-  return toObject;
-}
-
-export function apiKeyConfigToVertex(
-  apiClient: ApiClient,
-  fromObject: types.ApiKeyConfig,
-): Record<string, unknown> {
-  const toObject: Record<string, unknown> = {};
-
-  const fromApiKeyString = common.getValueByPath(fromObject, ['apiKeyString']);
-  if (fromApiKeyString != null) {
-    common.setValueByPath(toObject, ['apiKeyString'], fromApiKeyString);
-  }
-
-  return toObject;
-}
-
-export function authConfigToMldev(
-  apiClient: ApiClient,
-  fromObject: types.AuthConfig,
-): Record<string, unknown> {
-  const toObject: Record<string, unknown> = {};
-
-  if (common.getValueByPath(fromObject, ['apiKeyConfig']) !== undefined) {
-    throw new Error('apiKeyConfig parameter is not supported in Gemini API.');
-  }
-
-  const fromAuthType = common.getValueByPath(fromObject, ['authType']);
-  if (fromAuthType != null) {
-    common.setValueByPath(toObject, ['authType'], fromAuthType);
-  }
-
-  const fromGoogleServiceAccountConfig = common.getValueByPath(fromObject, [
-    'googleServiceAccountConfig',
-  ]);
-  if (fromGoogleServiceAccountConfig != null) {
-    common.setValueByPath(
-      toObject,
-      ['googleServiceAccountConfig'],
-      fromGoogleServiceAccountConfig,
-    );
-  }
-
-  const fromHttpBasicAuthConfig = common.getValueByPath(fromObject, [
-    'httpBasicAuthConfig',
-  ]);
-  if (fromHttpBasicAuthConfig != null) {
-    common.setValueByPath(
-      toObject,
-      ['httpBasicAuthConfig'],
-      fromHttpBasicAuthConfig,
-    );
-  }
-
-  const fromOauthConfig = common.getValueByPath(fromObject, ['oauthConfig']);
-  if (fromOauthConfig != null) {
-    common.setValueByPath(toObject, ['oauthConfig'], fromOauthConfig);
-  }
-
-  const fromOidcConfig = common.getValueByPath(fromObject, ['oidcConfig']);
-  if (fromOidcConfig != null) {
-    common.setValueByPath(toObject, ['oidcConfig'], fromOidcConfig);
-  }
-
-  return toObject;
-}
-
-export function authConfigToVertex(
-  apiClient: ApiClient,
-  fromObject: types.AuthConfig,
-): Record<string, unknown> {
-  const toObject: Record<string, unknown> = {};
-
-  const fromApiKeyConfig = common.getValueByPath(fromObject, ['apiKeyConfig']);
-  if (fromApiKeyConfig != null) {
-    common.setValueByPath(
-      toObject,
-      ['apiKeyConfig'],
-      apiKeyConfigToVertex(apiClient, fromApiKeyConfig),
-    );
-  }
-
-  const fromAuthType = common.getValueByPath(fromObject, ['authType']);
-  if (fromAuthType != null) {
-    common.setValueByPath(toObject, ['authType'], fromAuthType);
-  }
-
-  const fromGoogleServiceAccountConfig = common.getValueByPath(fromObject, [
-    'googleServiceAccountConfig',
-  ]);
-  if (fromGoogleServiceAccountConfig != null) {
-    common.setValueByPath(
-      toObject,
-      ['googleServiceAccountConfig'],
-      fromGoogleServiceAccountConfig,
-    );
-  }
-
-  const fromHttpBasicAuthConfig = common.getValueByPath(fromObject, [
-    'httpBasicAuthConfig',
-  ]);
-  if (fromHttpBasicAuthConfig != null) {
-    common.setValueByPath(
-      toObject,
-      ['httpBasicAuthConfig'],
-      fromHttpBasicAuthConfig,
-    );
-  }
-
-  const fromOauthConfig = common.getValueByPath(fromObject, ['oauthConfig']);
-  if (fromOauthConfig != null) {
-    common.setValueByPath(toObject, ['oauthConfig'], fromOauthConfig);
-  }
-
-  const fromOidcConfig = common.getValueByPath(fromObject, ['oidcConfig']);
-  if (fromOidcConfig != null) {
-    common.setValueByPath(toObject, ['oidcConfig'], fromOidcConfig);
-  }
-
-  return toObject;
-}
-
-export function googleMapsToMldev(
-  apiClient: ApiClient,
-  fromObject: types.GoogleMaps,
-): Record<string, unknown> {
-  const toObject: Record<string, unknown> = {};
-
-  if (common.getValueByPath(fromObject, ['authConfig']) !== undefined) {
-    throw new Error('authConfig parameter is not supported in Gemini API.');
-  }
-
-  return toObject;
-}
-
-export function googleMapsToVertex(
-  apiClient: ApiClient,
-  fromObject: types.GoogleMaps,
-): Record<string, unknown> {
-  const toObject: Record<string, unknown> = {};
-
-  const fromAuthConfig = common.getValueByPath(fromObject, ['authConfig']);
-  if (fromAuthConfig != null) {
-    common.setValueByPath(
-      toObject,
-      ['authConfig'],
-      authConfigToVertex(apiClient, fromAuthConfig),
-    );
-  }
-
-  return toObject;
-}
-
 export function toolToMldev(
   apiClient: ApiClient,
   fromObject: types.Tool,
@@ -491,10 +328,6 @@ export function toolToMldev(
     throw new Error(
       'enterpriseWebSearch parameter is not supported in Gemini API.',
     );
-  }
-
-  if (common.getValueByPath(fromObject, ['googleMaps']) !== undefined) {
-    throw new Error('googleMaps parameter is not supported in Gemini API.');
   }
 
   const fromCodeExecution = common.getValueByPath(fromObject, [
@@ -553,15 +386,6 @@ export function toolToVertex(
       toObject,
       ['enterpriseWebSearch'],
       enterpriseWebSearchToVertex(),
-    );
-  }
-
-  const fromGoogleMaps = common.getValueByPath(fromObject, ['googleMaps']);
-  if (fromGoogleMaps != null) {
-    common.setValueByPath(
-      toObject,
-      ['googleMaps'],
-      googleMapsToVertex(apiClient, fromGoogleMaps),
     );
   }
 
@@ -1024,11 +848,14 @@ export function liveConnectConfigToMldev(
     );
   }
 
-  if (
-    common.getValueByPath(fromObject, ['inputAudioTranscription']) !== undefined
-  ) {
-    throw new Error(
-      'inputAudioTranscription parameter is not supported in Gemini API.',
+  const fromInputAudioTranscription = common.getValueByPath(fromObject, [
+    'inputAudioTranscription',
+  ]);
+  if (parentObject !== undefined && fromInputAudioTranscription != null) {
+    common.setValueByPath(
+      parentObject,
+      ['setup', 'inputAudioTranscription'],
+      audioTranscriptionConfigToMldev(),
     );
   }
 
@@ -1513,11 +1340,14 @@ export function liveClientSetupToMldev(
     );
   }
 
-  if (
-    common.getValueByPath(fromObject, ['inputAudioTranscription']) !== undefined
-  ) {
-    throw new Error(
-      'inputAudioTranscription parameter is not supported in Gemini API.',
+  const fromInputAudioTranscription = common.getValueByPath(fromObject, [
+    'inputAudioTranscription',
+  ]);
+  if (fromInputAudioTranscription != null) {
+    common.setValueByPath(
+      toObject,
+      ['inputAudioTranscription'],
+      audioTranscriptionConfigToMldev(),
     );
   }
 
